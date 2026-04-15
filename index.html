@@ -148,10 +148,10 @@ html,body{
 }
 table{border-collapse:collapse;}
 td{
-  width:calc((100vw - 120px) / 4);
-  height:calc((100vw - 120px) / 4);
-  max-width:72px;max-height:72px;
-  min-width:60px;min-height:60px;
+  width:calc((100vw - 100px) / 4);
+  height:calc((100vw - 100px) / 4);
+  max-width:88px;max-height:88px;
+  min-width:72px;min-height:72px;
   border:1px solid rgba(160,140,100,.2);
   text-align:center;vertical-align:middle;
   cursor:pointer;position:relative;
@@ -176,7 +176,7 @@ td::after {bottom:4px;right:4px;border-width:0 1px 1px 0;}
   width:88%;height:88%;
   margin:auto;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:clamp(20px,5.5vw,28px);font-weight:900;
+  font-size:clamp(28px,7.5vw,42px);font-weight:900;
   user-select:none;position:relative;
   transition:transform .15s, box-shadow .15s;
   letter-spacing:0;
@@ -190,12 +190,12 @@ td::after {bottom:4px;right:4px;border-width:0 1px 1px 0;}
     inset 0 1px 0 rgba(255,255,255,.95);
 }
 .piece.black{
-  background:linear-gradient(145deg,#3d3328 0%,#1e1912 100%);
-  border:2px solid #3d3328;color:#f0ece4;
+  background:linear-gradient(145deg,#ffffff 0%,#f0ece4 100%);
+  border:2px solid #2c2416;color:#1e1912;
   box-shadow:
-    0 3px 0 rgba(0,0,0,.35),
-    0 4px 12px rgba(0,0,0,.2),
-    inset 0 1px 0 rgba(255,255,255,.06);
+    0 3px 0 rgba(0,0,0,.2),
+    0 4px 12px rgba(0,0,0,.15),
+    inset 0 1px 0 rgba(255,255,255,.95);
 }
 .piece.back{
   background:linear-gradient(145deg,#d4c9b4 0%,#b8aa93 100%);
@@ -212,18 +212,18 @@ td::after {bottom:4px;right:4px;border-width:0 1px 1px 0;}
 }
 .piece.empty{background:none;border:none;box-shadow:none;}
 
-/* selected glow — no cell background, only piece glow */
+/* selected glow — white light ring for all pieces */
 @keyframes glowPulse{
-  0%,100%{box-shadow:0 0 0 4px rgba(192,57,43,.35),0 0 18px 4px rgba(192,57,43,.3),inset 0 1px 0 rgba(255,255,255,.95);}
-  50%{box-shadow:0 0 0 6px rgba(192,57,43,.25),0 0 28px 8px rgba(192,57,43,.2),inset 0 1px 0 rgba(255,255,255,.95);}
+  0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 16px 6px rgba(255,255,255,.7),0 0 32px 10px rgba(255,255,255,.4),inset 0 1px 0 rgba(255,255,255,.95);}
+  50%{box-shadow:0 0 0 5px rgba(255,255,255,.95),0 0 24px 10px rgba(255,255,255,.8),0 0 48px 16px rgba(255,255,255,.5),inset 0 1px 0 rgba(255,255,255,.95);}
 }
 @keyframes glowPulseBlack{
-  0%,100%{box-shadow:0 0 0 4px rgba(44,36,22,.3),0 0 18px 4px rgba(44,36,22,.2),inset 0 1px 0 rgba(255,255,255,.06);}
-  50%{box-shadow:0 0 0 6px rgba(44,36,22,.2),0 0 28px 8px rgba(44,36,22,.15),inset 0 1px 0 rgba(255,255,255,.06);}
+  0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 16px 6px rgba(255,255,255,.7),0 0 32px 10px rgba(255,255,255,.4),inset 0 1px 0 rgba(255,255,255,.95);}
+  50%{box-shadow:0 0 0 5px rgba(255,255,255,.95),0 0 24px 10px rgba(255,255,255,.8),0 0 48px 16px rgba(255,255,255,.5),inset 0 1px 0 rgba(255,255,255,.95);}
 }
 @keyframes glowPulseBack{
-  0%,100%{box-shadow:0 0 0 4px rgba(180,160,130,.4),0 0 16px 4px rgba(180,160,130,.3);}
-  50%{box-shadow:0 0 0 6px rgba(180,160,130,.25),0 0 24px 8px rgba(180,160,130,.2);}
+  0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 0 16px 6px rgba(255,255,255,.65),0 0 30px 10px rgba(255,255,255,.35);}
+  50%{box-shadow:0 0 0 5px rgba(255,255,255,.9),0 0 24px 10px rgba(255,255,255,.75),0 0 44px 16px rgba(255,255,255,.45);}
 }
 td.selected .piece.red{
   transform:scale(1.08);
@@ -379,6 +379,8 @@ function initGame(){
     ...redTypes.map(t=>({side:"R",type:t,revealed:false})),
     ...blackTypes.map(t=>({side:"B",type:t,revealed:false}))
   ].sort(()=>Math.random()-0.5);
+  // Fisher-Yates shuffle for true randomness
+  for(let i=pieces.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[pieces[i],pieces[j]]=[pieces[j],pieces[i]];}
   let idx=0;
   for(let y=0;y<H;y++){ board[y]=[]; for(let x=0;x<W;x++) board[y][x]=pieces[idx++]; }
   updateUndo(); draw();
