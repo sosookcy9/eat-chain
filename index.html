@@ -16,7 +16,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{
-  min-height:100vh;background:var(--bg);
+  min-height:100vh;min-height:100dvh;background:var(--bg);
   font-family:'Noto Serif TC',-apple-system,serif;
   color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
@@ -46,8 +46,8 @@ html,body{
 }
 
 /* ── GAME ── */
-#game{display:none;flex-direction:column;align-items:center;min-height:100vh;background:var(--bg);}
-.nav{width:100%;display:flex;align-items:center;justify-content:space-between;padding:56px 24px 16px;}
+#game{display:none;flex-direction:column;align-items:center;min-height:100vh;min-height:100dvh;background:var(--bg);}
+.nav{width:100%;display:flex;align-items:center;justify-content:space-between;padding:max(env(safe-area-inset-top),20px) 24px 8px;}
 .nav-left,.nav-right{width:60px;}
 .nav-btn{
   font-size:14px;font-weight:600;letter-spacing:1px;color:var(--ink2);
@@ -57,12 +57,12 @@ html,body{
 .nav-btn:disabled{opacity:.3;}
 .nav-title{font-size:15px;font-weight:700;letter-spacing:3px;color:var(--ink);}
 .turn-bar{
-  width:100%;text-align:center;padding:0 24px 8px;
-  font-size:13px;font-weight:600;letter-spacing:2px;color:var(--ink2);min-height:24px;
+  width:100%;text-align:center;padding:0 24px 6px;
+  font-size:13px;font-weight:600;letter-spacing:2px;color:var(--ink2);min-height:20px;
 }
 .game-body{
   display:flex;flex-direction:row;align-items:flex-start;justify-content:center;
-  gap:10px;padding:8px 0 40px;width:100%;
+  gap:8px;padding:4px 8px 16px;width:100%;
 }
 
 /* captured */
@@ -83,8 +83,11 @@ html,body{
 }
 table{border-collapse:collapse;}
 td{
-  width:calc((100vw - 100px)/4);height:calc((100vw - 100px)/4);
-  max-width:88px;max-height:88px;min-width:72px;min-height:72px;
+  /* Fit to both screen width (4 cols) and height (8 rows) */
+  width:min(calc((100vw - 110px)/4), calc((100dvh - 140px)/8));
+  height:min(calc((100vw - 110px)/4), calc((100dvh - 140px)/8));
+  max-width:96px;max-height:96px;
+  min-width:52px;min-height:52px;
   border:1px solid rgba(160,140,100,.2);text-align:center;vertical-align:middle;
   cursor:pointer;position:relative;background:var(--board);
   transition:background .1s;-webkit-tap-highlight-color:transparent;
@@ -163,7 +166,7 @@ td.selected .piece.back{transform:scale(1.08);animation:glowBack 1.6s ease-in-ou
   animation:revealPop .4s cubic-bezier(.34,1.56,.64,1) forwards;
 }
 .win-eyebrow{font-size:11px;letter-spacing:4px;color:var(--ink2);font-weight:600;margin-bottom:16px;}
-#winText{font-size:68px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:36px;}
+#winText{font-size:56px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:36px;white-space:nowrap;}
 .win-btns{display:flex;flex-direction:column;gap:10px;}
 .win-btn{
   width:100%;padding:15px;border:none;border-radius:14px;
@@ -260,10 +263,31 @@ function initGame(){
     ...RED_SET.map(t=>({side:'R',type:t,revealed:false})),
     ...BLK_SET.map(t=>({side:'B',type:t,revealed:false}))
   ];
-  for(let i=pcs.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1));[pcs[i],pcs[j]]=[pcs[j],pcs[i]]; }
+  // Strong shuffle: crypto.getRandomValues when available, double-pass Fisher-Yates
+  shufflePieces(pcs);
+  shufflePieces(pcs);
   let idx=0;
   for(let y=0;y<H;y++){ board[y]=[]; for(let x=0;x<W;x++) board[y][x]=pcs[idx++]; }
   updateUndo(); updateTurnBar(); draw();
+}
+
+function shufflePieces(arr){
+  const hasCrypto = typeof crypto!=='undefined' && crypto.getRandomValues;
+  for(let i=arr.length-1;i>0;i--){
+    let j;
+    if(hasCrypto){
+      // Unbiased random 0..i
+      const range=i+1;
+      const max=Math.floor(0x100000000/range)*range;
+      let r;
+      const buf=new Uint32Array(1);
+      do{ crypto.getRandomValues(buf); r=buf[0]; }while(r>=max);
+      j=r%range;
+    } else {
+      j=Math.floor(Math.random()*(i+1));
+    }
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
 }
 
 /* ══════════════════════════════════════
@@ -323,8 +347,10 @@ function draw(){
   $('board').innerHTML=h;
   let bs=[...blkCap].sort((a,b)=>RANK[b.type]-RANK[a.type]);
   let rs=[...redCap].sort((a,b)=>RANK[b.type]-RANK[a.type]);
-  $('blackCaptures').innerHTML=bs.map(p=>`<div class="cap-piece black">${p.type}</div>`).join('');
-  $('redCaptures').innerHTML=rs.map(p=>`<div class="cap-piece red">${p.type}</div>`).join('');
+  // blkCap = pieces captured by black side (they are red pieces)
+  // redCap = pieces captured by red side (they are black pieces)
+  $('blackCaptures').innerHTML=bs.map(p=>`<div class="cap-piece ${p.side==='R'?'red':'black'}">${p.type}</div>`).join('');
+  $('redCaptures').innerHTML=rs.map(p=>`<div class="cap-piece ${p.side==='R'?'red':'black'}">${p.type}</div>`).join('');
 }
 
 /* ══════════════════════════════════════
@@ -543,6 +569,10 @@ function aiTurn(){
   if(gameOver||animating) return;
   let acts=aiCollectActions();
   if(!acts.length) return;
+  // Apply look-ahead penalty: subtract worst player counter
+  for(let a of acts){
+    a.score += aiLookahead(a);
+  }
   acts.sort((a,b)=>b.score-a.score);
   // Pick from top tier (within 2 pts)
   let top=acts.filter(a=>a.score>=acts[0].score-2);
@@ -597,42 +627,44 @@ function aiCollectActions(){
 function aiScoreEat(atk,tgt){ return 50+RANK[tgt.type]*5-RANK[atk.type]; }
 function aiScoreFlipEat(atk){ return 8-RANK[atk.type]; }
 
+/* Piece value for trade evaluation */
+function pieceValue(p){
+  // 帥將6 > 仕士5 > 相象4 > 俥車3 > 傌馬2 > 兵卒1, 炮0 but very useful
+  if(isCannon(p)) return 7; // cannon is highly valuable
+  return RANK[p.type]*2 + 2;
+}
+
 function aiScoreMove(p,x1,y1,x2,y2){
   let s=0;
   // Escape threat
   if(aiThreatened(x1,y1,p)){
-    s+= aiThreatened(x2,y2,p) ? 2 : 18+RANK[p.type]*2;
+    s+= aiThreatened(x2,y2,p) ? 2 : 18+pieceValue(p)*3;
   }
-  // ── PURSUIT: move toward nearest eatable enemy ──
-  let pursuit=aiPursuitScore(p,x1,y1,x2,y2);
-  s+=pursuit;
+  // Pursuit: move toward nearest eatable enemy
+  s+=aiPursuitScore(p,x1,y1,x2,y2);
   return s;
 }
 
 function aiPursuitScore(p,x1,y1,x2,y2){
-  // Find closest revealed enemy this piece can eat
   let bestOld=999, bestNew=999;
   for(let ey=0;ey<H;ey++) for(let ex=0;ex<W;ex++){
     let ep=board[ey][ex];
     if(!ep||!ep.revealed||ep.side===aiSide) continue;
-    // Can this piece eat that enemy? (ignoring position, just rank)
     if(!aiCouldEatRank(p,ep)) continue;
     let dOld=Math.abs(ex-x1)+Math.abs(ey-y1);
     let dNew=Math.abs(ex-x2)+Math.abs(ey-y2);
     if(dOld<bestOld) bestOld=dOld;
     if(dNew<bestNew) bestNew=dNew;
   }
-  if(bestOld===999) return 0; // no target
-  // Reward getting closer
+  if(bestOld===999) return 0;
   if(bestNew<bestOld) return 12+(bestOld-bestNew)*3;
-  if(bestNew>bestOld) return -2; // penalize moving away
+  if(bestNew>bestOld) return -2;
   return 0;
 }
 
-/* Can piece a eat piece b by rank? (ignoring board position) */
 function aiCouldEatRank(a,b){
   if(a.side===b.side) return false;
-  if(isCannon(a)) return true; // cannon can eat anything if path exists
+  if(isCannon(a)) return true;
   let rA=RANK[a.type],rB=RANK[b.type];
   if(rA===1&&rB===6) return true;
   if(rA===6&&rB===1) return false;
@@ -648,6 +680,58 @@ function aiThreatened(x,y,piece){
     if(isReachable(ex,ey,x,y,ep)&&canEat(ep,piece,ex,ey,x,y)) return true;
   }
   return false;
+}
+
+/* ── LOOK-AHEAD: simulate action and evaluate player's best counter ── */
+function aiLookahead(action){
+  // Clone board
+  let savedBoard=board.map(r=>r.map(c=>c?{...c}:null));
+  let result=0;
+
+  // Simulate AI's action on cloned board
+  if(action.act==='reveal'){
+    // Revealing — assume average case, small neutral bonus
+    board=savedBoard;
+    return 0;
+  }
+  if(action.act==='move'){
+    let atk=board[action.y1][action.x1];
+    board[action.y2][action.x2]=atk;
+    board[action.y1][action.x1]=null;
+    // Check: is this piece now threatened by player?
+    let worstLoss=findWorstPlayerCapture(action.x2,action.y2,atk);
+    result -= worstLoss;
+  } else if(action.act==='eat'){
+    let atk=board[action.y1][action.x1];
+    let tgt=board[action.y2][action.x2];
+    board[action.y2][action.x2]=atk;
+    board[action.y1][action.x1]=null;
+    // Can player eat AI back at new position?
+    let worstLoss=findWorstPlayerCapture(action.x2,action.y2,atk);
+    result -= worstLoss;
+  } else if(action.act==='eatFlip'){
+    // Unknown target — skip lookahead (risky by nature)
+    board=savedBoard;
+    return 0;
+  }
+
+  board=savedBoard;
+  return result;
+}
+
+/* Find the highest-value AI piece the player can capture next turn */
+function findWorstPlayerCapture(aiX,aiY,aiPiece){
+  let maxLoss=0;
+  // Check if any revealed player piece can capture aiPiece at (aiX,aiY)
+  for(let py=0;py<H;py++) for(let px=0;px<W;px++){
+    let pp=board[py][px];
+    if(!pp||!pp.revealed||pp.side!==playerSide) continue;
+    if(isReachable(px,py,aiX,aiY,pp)&&canEat(pp,aiPiece,px,py,aiX,aiY)){
+      let loss=pieceValue(aiPiece)*6; // heavy penalty for losing the piece
+      if(loss>maxLoss) maxLoss=loss;
+    }
+  }
+  return maxLoss;
 }
 
 /* ── AI EXECUTION ── */
