@@ -8,289 +8,167 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&display=swap');
 
 :root {
-  --bg:       #f5f0e8;
-  --surface:  #faf7f2;
-  --surface2: #ede8df;
-  --border:   rgba(180,160,130,.25);
-  --ink:      #2c2416;
-  --ink2:     #8a7a65;
-  --red:      #c0392b;
-  --red2:     rgba(192,57,43,.1);
-  --board:    #f0e9d8;
-  --board2:   #e8dfc8;
-  --shadow:   0 2px 16px rgba(60,40,10,.10);
+  --bg:#f5f0e8;--surface:#faf7f2;--surface2:#ede8df;
+  --border:rgba(180,160,130,.25);--ink:#2c2416;--ink2:#8a7a65;
+  --red:#c0392b;--board:#f0e9d8;
+  --shadow:0 2px 16px rgba(60,40,10,.10);
   --shadow-lg:0 8px 40px rgba(60,40,10,.15);
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{
-  min-height:100vh;
-  background:var(--bg);
+  min-height:100vh;background:var(--bg);
   font-family:'Noto Serif TC',-apple-system,serif;
-  color:var(--ink);
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 
 /* ── COVER ── */
 #cover{
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  min-height:100vh;
-  padding:48px 32px;
-  gap:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:48px 32px;
 }
-.cover-eyebrow{
-  font-size:11px;letter-spacing:5px;
-  color:var(--ink2);text-transform:uppercase;
-  margin-bottom:20px;font-weight:600;
-}
-.cover-title{
-  font-size:52px;font-weight:900;
-  letter-spacing:-2px;line-height:1;
-  color:var(--ink);margin-bottom:4px;
-}
+.cover-eyebrow{font-size:11px;letter-spacing:5px;color:var(--ink2);margin-bottom:20px;font-weight:600;}
+.cover-title{font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:4px;}
 .cover-title em{color:var(--red);font-style:normal;}
-.cover-rule{
-  width:36px;height:2px;
-  background:var(--red);opacity:.5;
-  margin:28px auto;
-}
-.cover-desc{
-  font-size:14px;color:var(--ink2);
-  line-height:1.8;text-align:center;
-  max-width:240px;margin-bottom:48px;
-}
+.cover-rule{width:36px;height:2px;background:var(--red);opacity:.5;margin:28px auto;}
+.cover-btns{display:flex;flex-direction:column;gap:14px;width:100%;max-width:260px;}
 .cover-btn{
-  padding:16px 52px;
-  background:var(--ink);color:var(--surface);
-  border:none;border-radius:100px;
-  font-family:'Noto Serif TC',serif;
-  font-size:16px;font-weight:700;letter-spacing:3px;
-  cursor:pointer;
+  padding:16px 52px;background:var(--ink);color:var(--surface);
+  border:none;border-radius:100px;font-family:'Noto Serif TC',serif;
+  font-size:16px;font-weight:700;letter-spacing:3px;cursor:pointer;
   box-shadow:0 4px 20px rgba(44,36,22,.25);
   transition:transform .12s,box-shadow .12s;
-  -webkit-tap-highlight-color:transparent;
+  -webkit-tap-highlight-color:transparent;width:100%;
 }
 .cover-btn:active{transform:scale(.96);box-shadow:none;}
+.cover-btn.secondary{
+  background:var(--surface);color:var(--ink);
+  border:2px solid var(--ink);box-shadow:0 2px 12px rgba(44,36,22,.12);
+}
 
 /* ── GAME ── */
-#game{
-  display:none;flex-direction:column;
-  align-items:center;
-  min-height:100vh;
-  background:var(--bg);
-}
-
-.nav{
-  width:100%;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:56px 24px 16px;
-}
+#game{display:none;flex-direction:column;align-items:center;min-height:100vh;background:var(--bg);}
+.nav{width:100%;display:flex;align-items:center;justify-content:space-between;padding:56px 24px 16px;}
 .nav-left,.nav-right{width:60px;}
 .nav-btn{
-  font-size:14px;font-weight:600;letter-spacing:1px;
-  color:var(--ink2);background:none;border:none;
-  cursor:pointer;padding:6px 0;
+  font-size:14px;font-weight:600;letter-spacing:1px;color:var(--ink2);
+  background:none;border:none;cursor:pointer;padding:6px 0;
   -webkit-tap-highlight-color:transparent;
 }
 .nav-btn:disabled{opacity:.3;}
-.nav-title{
-  font-size:15px;font-weight:700;
-  letter-spacing:3px;color:var(--ink);
+.nav-title{font-size:15px;font-weight:700;letter-spacing:3px;color:var(--ink);}
+.turn-bar{
+  width:100%;text-align:center;padding:0 24px 8px;
+  font-size:13px;font-weight:600;letter-spacing:2px;color:var(--ink2);min-height:24px;
 }
-
-/* game body */
 .game-body{
-  display:flex;flex-direction:row;
-  align-items:flex-start;justify-content:center;
-  gap:10px;
-  padding:8px 0 40px;
-  width:100%;
+  display:flex;flex-direction:row;align-items:flex-start;justify-content:center;
+  gap:10px;padding:8px 0 40px;width:100%;
 }
 
-/* captured pieces columns */
-.cap-col{
-  width:32px;flex-shrink:0;
-  display:flex;flex-direction:column;
-  gap:6px;align-items:center;
-  padding-top:8px;
-}
+/* captured */
+.cap-col{width:32px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;align-items:center;padding-top:8px;}
 .cap-piece{
-  width:28px;height:28px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   font-size:11px;font-weight:900;flex-shrink:0;
-  letter-spacing:0;
 }
-.cap-piece.red{
-  background:var(--surface);
-  border:1.5px solid var(--red);
-  color:var(--red);
-  box-shadow:0 1px 4px rgba(192,57,43,.2);
-}
-.cap-piece.black{
-  background:var(--ink);
-  color:var(--surface);
-  box-shadow:0 1px 4px rgba(44,36,22,.25);
-}
+.cap-piece.red{background:var(--surface);border:1.5px solid var(--red);color:var(--red);box-shadow:0 1px 4px rgba(192,57,43,.2);}
+.cap-piece.black{background:var(--ink);color:var(--surface);box-shadow:0 1px 4px rgba(44,36,22,.25);}
 
 /* board */
-.board-wrap{
-  flex:1;
-  display:flex;justify-content:center;
-}
+.board-wrap{flex:1;display:flex;justify-content:center;}
 .board-outer{
-  background:var(--board);
-  border-radius:20px;
-  padding:8px;
+  background:var(--board);border-radius:20px;padding:8px;
   box-shadow:var(--shadow-lg),inset 0 1px 0 rgba(255,255,255,.6);
   border:1px solid rgba(180,160,120,.3);
 }
 table{border-collapse:collapse;}
 td{
-  width:calc((100vw - 100px) / 4);
-  height:calc((100vw - 100px) / 4);
-  max-width:88px;max-height:88px;
-  min-width:72px;min-height:72px;
-  border:1px solid rgba(160,140,100,.2);
-  text-align:center;vertical-align:middle;
-  cursor:pointer;position:relative;
-  background:var(--board);
-  transition:background .1s;
-  -webkit-tap-highlight-color:transparent;
+  width:calc((100vw - 100px)/4);height:calc((100vw - 100px)/4);
+  max-width:88px;max-height:88px;min-width:72px;min-height:72px;
+  border:1px solid rgba(160,140,100,.2);text-align:center;vertical-align:middle;
+  cursor:pointer;position:relative;background:var(--board);
+  transition:background .1s;-webkit-tap-highlight-color:transparent;
 }
-td:active{background:transparent;}
-td.selected{background:transparent;}
-
+td:active,td.selected{background:transparent;}
 td::before,td::after{
-  content:'';position:absolute;
-  width:7px;height:7px;
-  border-color:rgba(160,140,100,.3);border-style:solid;
-  pointer-events:none;
+  content:'';position:absolute;width:7px;height:7px;
+  border-color:rgba(160,140,100,.3);border-style:solid;pointer-events:none;
 }
 td::before{top:4px;left:4px;border-width:1px 0 0 1px;}
-td::after {bottom:4px;right:4px;border-width:0 1px 1px 0;}
+td::after{bottom:4px;right:4px;border-width:0 1px 1px 0;}
 
 /* pieces */
 .piece{
-  width:88%;height:88%;
-  margin:auto;border-radius:50%;
+  width:88%;height:88%;margin:auto;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   font-size:clamp(28px,7.5vw,42px);font-weight:900;
-  user-select:none;position:relative;
-  transition:transform .15s, box-shadow .15s;
-  letter-spacing:0;
+  user-select:none;position:relative;transition:transform .15s,box-shadow .15s;
 }
 .piece.red{
-  background:linear-gradient(145deg,#fff9f8 0%,#fce8e6 100%);
-  border:2px solid var(--red);color:var(--red);
-  box-shadow:
-    0 3px 0 rgba(192,57,43,.2),
-    0 4px 12px rgba(192,57,43,.15),
-    inset 0 1px 0 rgba(255,255,255,.95);
+  background:linear-gradient(145deg,#fff9f8,#fce8e6);border:2px solid var(--red);color:var(--red);
+  box-shadow:0 3px 0 rgba(192,57,43,.2),0 4px 12px rgba(192,57,43,.15),inset 0 1px 0 rgba(255,255,255,.95);
 }
 .piece.black{
-  background:linear-gradient(145deg,#ffffff 0%,#f0ece4 100%);
-  border:2px solid #2c2416;color:#1e1912;
-  box-shadow:
-    0 3px 0 rgba(0,0,0,.2),
-    0 4px 12px rgba(0,0,0,.15),
-    inset 0 1px 0 rgba(255,255,255,.95);
+  background:linear-gradient(145deg,#fff,#f0ece4);border:2px solid #2c2416;color:#1e1912;
+  box-shadow:0 3px 0 rgba(0,0,0,.2),0 4px 12px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.95);
 }
 .piece.back{
-  background:linear-gradient(145deg,#d4c9b4 0%,#b8aa93 100%);
-  border:2px solid #c4b89e;
-  box-shadow:
-    0 3px 0 rgba(0,0,0,.15),
-    0 4px 10px rgba(0,0,0,.1),
-    inset 0 1px 0 rgba(255,255,255,.4);
+  background:linear-gradient(145deg,#d4c9b4,#b8aa93);border:2px solid #c4b89e;
+  box-shadow:0 3px 0 rgba(0,0,0,.15),0 4px 10px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.4);
 }
 .piece.back::after{
-  content:'';position:absolute;
-  width:70%;height:70%;border-radius:50%;
+  content:'';position:absolute;width:70%;height:70%;border-radius:50%;
   border:1.5px solid rgba(255,255,255,.35);
 }
 .piece.empty{background:none;border:none;box-shadow:none;}
 
-/* selected glow — white light ring for all pieces */
-@keyframes glowPulse{
-  0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 16px 6px rgba(255,255,255,.7),0 0 32px 10px rgba(255,255,255,.4),inset 0 1px 0 rgba(255,255,255,.95);}
-  50%{box-shadow:0 0 0 5px rgba(255,255,255,.95),0 0 24px 10px rgba(255,255,255,.8),0 0 48px 16px rgba(255,255,255,.5),inset 0 1px 0 rgba(255,255,255,.95);}
+/* ── GLOW — colored per piece ── */
+@keyframes glowRed{
+  0%,100%{box-shadow:0 0 0 3px rgba(192,57,43,.55),0 0 14px 5px rgba(192,57,43,.35),0 0 28px 10px rgba(192,57,43,.18),inset 0 1px 0 rgba(255,255,255,.95);}
+  50%{box-shadow:0 0 0 5px rgba(192,57,43,.7),0 0 22px 8px rgba(192,57,43,.45),0 0 44px 16px rgba(192,57,43,.22),inset 0 1px 0 rgba(255,255,255,.95);}
 }
-@keyframes glowPulseBlack{
-  0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 16px 6px rgba(255,255,255,.7),0 0 32px 10px rgba(255,255,255,.4),inset 0 1px 0 rgba(255,255,255,.95);}
-  50%{box-shadow:0 0 0 5px rgba(255,255,255,.95),0 0 24px 10px rgba(255,255,255,.8),0 0 48px 16px rgba(255,255,255,.5),inset 0 1px 0 rgba(255,255,255,.95);}
+@keyframes glowBlack{
+  0%,100%{box-shadow:0 0 0 3px rgba(44,36,22,.5),0 0 14px 5px rgba(44,36,22,.3),0 0 28px 10px rgba(44,36,22,.15),inset 0 1px 0 rgba(255,255,255,.95);}
+  50%{box-shadow:0 0 0 5px rgba(44,36,22,.65),0 0 22px 8px rgba(44,36,22,.4),0 0 44px 16px rgba(44,36,22,.2),inset 0 1px 0 rgba(255,255,255,.95);}
 }
-@keyframes glowPulseBack{
-  0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.85),0 0 16px 6px rgba(255,255,255,.65),0 0 30px 10px rgba(255,255,255,.35);}
-  50%{box-shadow:0 0 0 5px rgba(255,255,255,.9),0 0 24px 10px rgba(255,255,255,.75),0 0 44px 16px rgba(255,255,255,.45);}
+@keyframes glowBack{
+  0%,100%{box-shadow:0 0 0 3px rgba(180,160,120,.45),0 0 12px 5px rgba(180,160,120,.28),0 0 24px 10px rgba(180,160,120,.12);}
+  50%{box-shadow:0 0 0 5px rgba(180,160,120,.6),0 0 20px 8px rgba(180,160,120,.38),0 0 40px 14px rgba(180,160,120,.18);}
 }
-td.selected .piece.red{
-  transform:scale(1.08);
-  animation:glowPulse 1.6s ease-in-out infinite;
-}
-td.selected .piece.black{
-  transform:scale(1.08);
-  animation:glowPulseBlack 1.6s ease-in-out infinite;
-}
-td.selected .piece.back{
-  transform:scale(1.08);
-  animation:glowPulseBack 1.6s ease-in-out infinite;
-}
+td.selected .piece.red{transform:scale(1.08);animation:glowRed 1.6s ease-in-out infinite;}
+td.selected .piece.black{transform:scale(1.08);animation:glowBlack 1.6s ease-in-out infinite;}
+td.selected .piece.back{transform:scale(1.08);animation:glowBack 1.6s ease-in-out infinite;}
 
 /* animations */
 @keyframes revealPop{
-  0%  {transform:scale(.3) rotate(-15deg);opacity:0;}
-  65% {transform:scale(1.1) rotate(2deg);opacity:1;}
+  0%{transform:scale(.3) rotate(-15deg);opacity:0;}
+  65%{transform:scale(1.1) rotate(2deg);opacity:1;}
   100%{transform:scale(1) rotate(0);opacity:1;}
 }
-@keyframes retreatShake{
-  0%,100%{transform:translateX(0);}
-  25%{transform:translateX(-6px);}
-  75%{transform:translateX(6px);}
-}
-.reveal-pop   {animation:revealPop .4s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes retreatShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.reveal-pop{animation:revealPop .4s cubic-bezier(.34,1.56,.64,1) forwards;}
 .retreat-shake{animation:retreatShake .3s ease;}
 
 /* win overlay */
 #winOverlay{
   display:none;position:fixed;inset:0;z-index:500;
-  background:rgba(44,36,22,.55);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  flex-direction:column;align-items:center;justify-content:center;
-  padding:32px;
+  background:rgba(44,36,22,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  flex-direction:column;align-items:center;justify-content:center;padding:32px;
 }
 #winOverlay.show{display:flex;}
 .win-card{
-  background:var(--surface);
-  border-radius:28px;
-  padding:44px 32px 36px;
-  width:100%;max-width:300px;
-  text-align:center;
-  box-shadow:var(--shadow-lg);
-  border:1px solid var(--border);
+  background:var(--surface);border-radius:28px;padding:44px 32px 36px;
+  width:100%;max-width:300px;text-align:center;
+  box-shadow:var(--shadow-lg);border:1px solid var(--border);
   animation:revealPop .4s cubic-bezier(.34,1.56,.64,1) forwards;
 }
-.win-eyebrow{
-  font-size:11px;letter-spacing:4px;
-  color:var(--ink2);text-transform:uppercase;
-  font-weight:600;margin-bottom:16px;
-}
-#winText{
-  font-size:68px;font-weight:900;
-  letter-spacing:-2px;line-height:1;
-  margin-bottom:36px;
-}
+.win-eyebrow{font-size:11px;letter-spacing:4px;color:var(--ink2);font-weight:600;margin-bottom:16px;}
+#winText{font-size:68px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:36px;}
 .win-btns{display:flex;flex-direction:column;gap:10px;}
 .win-btn{
-  width:100%;padding:15px;
-  border:none;border-radius:14px;
-  font-family:'Noto Serif TC',serif;
-  font-size:15px;font-weight:700;letter-spacing:2px;
-  cursor:pointer;
-  transition:transform .1s;
-  -webkit-tap-highlight-color:transparent;
+  width:100%;padding:15px;border:none;border-radius:14px;
+  font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;letter-spacing:2px;
+  cursor:pointer;transition:transform .1s;-webkit-tap-highlight-color:transparent;
 }
 .win-btn:active{transform:scale(.97);}
 .win-btn.primary{background:var(--ink);color:var(--surface);}
@@ -301,28 +179,28 @@ td.selected .piece.back{
 
 <!-- COVER -->
 <div id="cover">
-  <div class="cover-eyebrow">二人對弈</div>
+  <div class="cover-eyebrow">象棋連吃</div>
   <div class="cover-title">象棋<em>連吃</em></div>
   <div class="cover-rule"></div>
-
-  <button class="cover-btn" onclick="startGame()">開局</button>
+  <div class="cover-btns">
+    <button class="cover-btn" onclick="startSinglePlayer()">單人挑戰</button>
+    <button class="cover-btn secondary" onclick="startTwoPlayer()">雙人對弈</button>
+  </div>
 </div>
 
 <!-- GAME -->
 <div id="game">
   <div class="nav">
-    <div class="nav-left">
-      <button class="nav-btn" onclick="showCover()">返回</button>
-    </div>
+    <div class="nav-left"><button class="nav-btn" onclick="showCover()">返回</button></div>
+    <div class="nav-title" id="navTitle"></div>
     <div class="nav-right" style="text-align:right">
       <button class="nav-btn" id="btnUndo" onclick="undoMove()" disabled>悔棋</button>
     </div>
   </div>
+  <div class="turn-bar" id="turnBar"></div>
   <div class="game-body">
     <div class="cap-col" id="blackCaptures"></div>
-    <div class="board-wrap">
-      <div class="board-outer"><table id="board"></table></div>
-    </div>
+    <div class="board-wrap"><div class="board-outer"><table id="board"></table></div></div>
     <div class="cap-col" id="redCaptures"></div>
   </div>
 </div>
@@ -340,198 +218,553 @@ td.selected .piece.back{
 </div>
 
 <script>
+/* ══════════════════════════════════════
+   CONSTANTS & STATE
+   ══════════════════════════════════════ */
 const W=4, H=8;
-const rankMap = {
-  "帥":6,"將":6,"仕":5,"士":5,"相":4,"象":4,
-  "俥":3,"車":3,"傌":2,"馬":2,"兵":1,"卒":1,"炮":0,"砲":0
-};
-const redTypes   = ["帥","仕","仕","相","相","傌","傌","俥","俥","炮","炮","兵","兵","兵","兵","兵"];
-const blackTypes = ["將","士","士","象","象","馬","馬","車","車","砲","砲","卒","卒","卒","卒","卒"];
+const RANK={"帥":6,"將":6,"仕":5,"士":5,"相":4,"象":4,"俥":3,"車":3,"傌":2,"馬":2,"兵":1,"卒":1,"炮":0,"砲":0};
+const RED_SET=["帥","仕","仕","相","相","傌","傌","俥","俥","炮","炮","兵","兵","兵","兵","兵"];
+const BLK_SET=["將","士","士","象","象","馬","馬","車","車","砲","砲","卒","卒","卒","卒","卒"];
 
-let board=[], selected=null, mustContinue=false, animating=false;
-let redCaptures=[], blackCaptures=[];
-let playerSide=null, gameMode='two', aiDiff=null;
-let currentTurn='R', colorAssigned=false;
-let history=[];
+let board, sel, animating, gameOver;
+let redCap, blkCap;
+let playerSide, aiSide, gameMode, currentTurn, colorAssigned;
+let history;
 
+/* ══════════════════════════════════════
+   NAVIGATION
+   ══════════════════════════════════════ */
 function showCover(){
-  document.getElementById("cover").style.display="flex";
-  document.getElementById("game").style.display="none";
-  document.getElementById("winOverlay").classList.remove("show");
+  $('cover').style.display='flex'; $('game').style.display='none';
+  $('winOverlay').classList.remove('show'); gameOver=true;
 }
-function startGame(){
-  gameMode='two'; aiDiff=null;
-  document.getElementById("cover").style.display="none";
-  document.getElementById("game").style.display="flex";
-  document.getElementById("winOverlay").classList.remove("show");
-  initGame();
+function startTwoPlayer(){ gameMode='two'; launchGame('雙人對弈'); }
+function startSinglePlayer(){ gameMode='ai'; launchGame('單人挑戰'); }
+function launchGame(title){
+  aiSide=null; $('navTitle').textContent=title;
+  $('cover').style.display='none'; $('game').style.display='flex';
+  $('winOverlay').classList.remove('show'); initGame();
 }
-function restartCurrent(){
-  document.getElementById("winOverlay").classList.remove("show");
-  initGame();
-}
+function restartCurrent(){ $('winOverlay').classList.remove('show'); initGame(); }
+function $(id){ return document.getElementById(id); }
 
+/* ══════════════════════════════════════
+   INIT
+   ══════════════════════════════════════ */
 function initGame(){
-  board=[]; selected=null; animating=false; mustContinue=false;
-  redCaptures=[]; blackCaptures=[];
-  playerSide=null; currentTurn='R'; colorAssigned=false; history=[];
-  let pieces=[
-    ...redTypes.map(t=>({side:"R",type:t,revealed:false})),
-    ...blackTypes.map(t=>({side:"B",type:t,revealed:false}))
-  ].sort(()=>Math.random()-0.5);
-  // Fisher-Yates shuffle for true randomness
-  for(let i=pieces.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[pieces[i],pieces[j]]=[pieces[j],pieces[i]];}
+  board=[]; sel=null; animating=false; gameOver=false;
+  redCap=[]; blkCap=[];
+  playerSide=null; aiSide=null;
+  currentTurn='R'; colorAssigned=false; history=[];
+  let pcs=[
+    ...RED_SET.map(t=>({side:'R',type:t,revealed:false})),
+    ...BLK_SET.map(t=>({side:'B',type:t,revealed:false}))
+  ];
+  for(let i=pcs.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1));[pcs[i],pcs[j]]=[pcs[j],pcs[i]]; }
   let idx=0;
-  for(let y=0;y<H;y++){ board[y]=[]; for(let x=0;x<W;x++) board[y][x]=pieces[idx++]; }
-  updateUndo(); draw();
+  for(let y=0;y<H;y++){ board[y]=[]; for(let x=0;x<W;x++) board[y][x]=pcs[idx++]; }
+  updateUndo(); updateTurnBar(); draw();
 }
 
-function saveHistory(){
-  history.push({
-    board: board.map(r=>r.map(p=>p?{...p}:null)),
-    selected: selected?{...selected}:null,
-    mustContinue, currentTurn, colorAssigned, playerSide,
-    redCaptures: redCaptures.map(p=>({...p})),
-    blackCaptures: blackCaptures.map(p=>({...p}))
-  });
-  updateUndo();
+/* ══════════════════════════════════════
+   HISTORY & UNDO
+   ══════════════════════════════════════ */
+function snap(){
+  return {
+    board:board.map(r=>r.map(p=>p?{...p}:null)),
+    sel:sel?{...sel}:null, currentTurn, colorAssigned, playerSide, aiSide,
+    redCap:redCap.map(p=>({...p})), blkCap:blkCap.map(p=>({...p}))
+  };
+}
+function saveH(){ history.push(snap()); updateUndo(); }
+function loadH(h){
+  board=h.board; sel=h.sel; currentTurn=h.currentTurn;
+  colorAssigned=h.colorAssigned; playerSide=h.playerSide; aiSide=h.aiSide;
+  redCap=h.redCap; blkCap=h.blkCap;
+  updateUndo(); updateTurnBar(); draw();
 }
 function undoMove(){
   if(!history.length||animating) return;
-  let h=history.pop();
-  board=h.board.map(r=>r.map(p=>p?{...p}:null));
-  selected=h.selected?{...h.selected}:null;
-  mustContinue=h.mustContinue; currentTurn=h.currentTurn;
-  colorAssigned=h.colorAssigned; playerSide=h.playerSide;
-  redCaptures=h.redCaptures.map(p=>({...p}));
-  blackCaptures=h.blackCaptures.map(p=>({...p}));
-  updateUndo(); draw();
+  if(gameMode==='ai'&&history.length>=2) history.pop(); // skip AI state
+  loadH(history.pop());
 }
-function updateUndo(){ document.getElementById("btnUndo").disabled=!history.length; }
+function updateUndo(){ $('btnUndo').disabled=!history.length; }
 
+/* ══════════════════════════════════════
+   TURN BAR
+   ══════════════════════════════════════ */
+function updateTurnBar(){
+  let b=$('turnBar');
+  if(gameMode==='two'){ b.textContent=''; return; }
+  if(!colorAssigned){ b.textContent='請翻開一顆棋子'; b.style.color='var(--ink2)'; }
+  else if(isAiTurn()){ b.textContent='電腦思考中…'; b.style.color='var(--ink2)'; }
+  else {
+    b.textContent=playerSide==='R'?'你的回合（紅方）':'你的回合（黑方）';
+    b.style.color=playerSide==='R'?'#c0392b':'#2c2416';
+  }
+}
+
+/* ══════════════════════════════════════
+   DRAW
+   ══════════════════════════════════════ */
 function draw(){
-  let html="";
+  let h='';
   for(let y=0;y<H;y++){
-    html+="<tr>";
+    h+='<tr>';
     for(let x=0;x<W;x++){
-      let p=board[y][x], text="", cls="piece";
-      if(p){
-        if(p.revealed){ text=p.type; cls+=" "+(p.side==="R"?"red":"black"); }
-        else cls+=" back";
-      } else cls+=" empty";
-      let isSel=selected&&selected.x===x&&selected.y===y;
-      html+=`<td onclick="clickCell(${x},${y})" class="${isSel?"selected":""}">
-        <div class="${cls}" id="c${x}_${y}">${text}</div></td>`;
+      let p=board[y][x],txt='',cls='piece';
+      if(p){ if(p.revealed){txt=p.type;cls+=' '+(p.side==='R'?'red':'black');}else cls+=' back';}
+      else cls+=' empty';
+      let s=sel&&sel.x===x&&sel.y===y;
+      h+=`<td onclick="clickCell(${x},${y})" class="${s?'selected':''}"><div class="${cls}" id="c${x}_${y}">${txt}</div></td>`;
     }
-    html+="</tr>";
+    h+='</tr>';
   }
-  document.getElementById("board").innerHTML=html;
-  let bSorted=[...blackCaptures].sort((a,b)=>rankMap[b.type]-rankMap[a.type]);
-  let rSorted=[...redCaptures].sort((a,b)=>rankMap[b.type]-rankMap[a.type]);
-  document.getElementById("blackCaptures").innerHTML=bSorted.map(p=>`<div class="cap-piece black">${p.type}</div>`).join('');
-  document.getElementById("redCaptures").innerHTML=rSorted.map(p=>`<div class="cap-piece red">${p.type}</div>`).join('');
+  $('board').innerHTML=h;
+  let bs=[...blkCap].sort((a,b)=>RANK[b.type]-RANK[a.type]);
+  let rs=[...redCap].sort((a,b)=>RANK[b.type]-RANK[a.type]);
+  $('blackCaptures').innerHTML=bs.map(p=>`<div class="cap-piece black">${p.type}</div>`).join('');
+  $('redCaptures').innerHTML=rs.map(p=>`<div class="cap-piece red">${p.type}</div>`).join('');
 }
 
-function clickCell(x,y){
-  if(animating) return;
-  let cell=board[y][x];
-  if(cell&&!cell.revealed&&!selected){
-    saveHistory(); cell.revealed=true; draw(); return;
-  }
-  if(selected){
-    let atk=board[selected.y][selected.x];
-    if(selected.x===x&&selected.y===y){ selected=null; draw(); return; }
-    if(atk&&isReachable(selected.x,selected.y,x,y,atk)){ doMove(selected.x,selected.y,x,y); return; }
-    if(cell&&cell.revealed){ selected={x,y}; draw(); return; }
-    selected=null; draw(); return;
-  }
-  if(cell&&cell.revealed){ selected={x,y}; draw(); }
+/* ══════════════════════════════════════
+   CORE RULES
+   ══════════════════════════════════════ */
+function isCannon(p){ return p.type==='炮'||p.type==='砲'; }
+function adj(x1,y1,x2,y2){ return Math.abs(x2-x1)+Math.abs(y2-y1)===1; }
+
+function cannonPath(x1,y1,x2,y2){
+  if(x1!==x2&&y1!==y2) return false;
+  let c=0;
+  if(x1===x2){let mn=Math.min(y1,y2),mx=Math.max(y1,y2);for(let y=mn+1;y<mx;y++)if(board[y][x1])c++;}
+  else{let mn=Math.min(x1,x2),mx=Math.max(x1,x2);for(let x=mn+1;x<mx;x++)if(board[y1][x])c++;}
+  return c===1;
 }
 
 function isReachable(x1,y1,x2,y2,atk){
-  let isCannon=(atk.type==="炮"||atk.type==="砲");
-  let tgt=board[y2][x2];
-  if(isCannon&&tgt) return checkCannon(x1,y1,x2,y2);
-  return Math.abs(x2-x1)+Math.abs(y2-y1)===1;
-}
-
-function doMove(x1,y1,x2,y2){
-  let atk=board[y1][x1], tgt=board[y2][x2];
-  if(!atk) return;
-  let isCannon=(atk.type==="炮"||atk.type==="砲");
-  if(isCannon&&!tgt&&Math.abs(x2-x1)+Math.abs(y2-y1)!==1){ selected=null; draw(); return; }
-  if(isCannon&&tgt&&!checkCannon(x1,y1,x2,y2)){ selected=null; draw(); return; }
-  if(!isCannon&&Math.abs(x2-x1)+Math.abs(y2-y1)!==1){ selected=null; draw(); return; }
-  saveHistory();
-  if(!tgt){
-    board[y2][x2]=atk; board[y1][x1]=null; selected=null;
-    checkWin(); draw(); return;
-  }
-  if(!tgt.revealed){ handleUnrevealed(x1,y1,x2,y2,atk,tgt); return; }
-  if(!canEat(atk,tgt,x1,y1,x2,y2)){ selected=null; draw(); return; }
-  finishCapture(x1,y1,x2,y2,atk,tgt,true);
-}
-
-function handleUnrevealed(x1,y1,x2,y2,atk,tgt){
-  animating=true; tgt.revealed=true; draw();
-  let el=document.getElementById(`c${x2}_${y2}`);
-  if(el) el.classList.add("reveal-pop");
-  setTimeout(()=>{
-    if(canEat(atk,tgt,x1,y1,x2,y2)){
-      finishCapture(x1,y1,x2,y2,atk,tgt,false);
-    } else {
-      let ael=document.getElementById(`c${x1}_${y1}`);
-      if(ael) ael.classList.add("retreat-shake");
-      selected=null;
-      checkWin();
-      setTimeout(()=>{ animating=false; draw(); },350);
-    }
-  },460);
-}
-
-function finishCapture(x1,y1,x2,y2,atk,tgt,doAnim){
-  function afterCapture(){
-    if(atk.side==="R") redCaptures.push(tgt);
-    else blackCaptures.push(tgt);
-    board[y2][x2]=atk; board[y1][x1]=null;
-    selected={x:x2,y:y2};
-    animating=false;
-    checkWin(); draw();
-  }
-  if(doAnim){
-    animating=true; tgt.revealed=true; draw();
-    let el=document.getElementById(`c${x2}_${y2}`);
-    if(el) el.classList.add("reveal-pop");
-    setTimeout(afterCapture,460);
-  } else { afterCapture(); }
+  if(isCannon(atk)&&board[y2][x2]) return cannonPath(x1,y1,x2,y2);
+  return adj(x1,y1,x2,y2);
 }
 
 function canEat(a,b,x1,y1,x2,y2){
   if(!b||a.side===b.side) return false;
-  if(a.type==="炮"||a.type==="砲") return checkCannon(x1,y1,x2,y2);
-  let rA=rankMap[a.type],rB=rankMap[b.type];
-  if(rA===1&&rB===6) return true;
-  if(rA===6&&rB===1) return false;
-  if(rA===1&&(b.type==="炮"||b.type==="砲")) return false;
+  if(isCannon(a)) return cannonPath(x1,y1,x2,y2);
+  let rA=RANK[a.type],rB=RANK[b.type];
+  if(rA===1&&rB===6) return true;   // 兵吃將
+  if(rA===6&&rB===1) return false;   // 將不能吃兵
+  if(rA===1&&isCannon(b)) return false; // 兵不能吃炮
   return rA>=rB;
 }
 
-function checkCannon(x1,y1,x2,y2){
-  if(x1!==x2&&y1!==y2) return false;
-  let count=0;
-  if(x1===x2){ let mn=Math.min(y1,y2),mx=Math.max(y1,y2); for(let y=mn+1;y<mx;y++) if(board[y][x1]) count++; }
-  else { let mn=Math.min(x1,x2),mx=Math.max(x1,x2); for(let x=mn+1;x<mx;x++) if(board[y1][x]) count++; }
-  return count===1;
+/* Check if piece at (x,y) can capture anything (for chain-eat) */
+function hasCapture(x,y){
+  let atk=board[y][x];
+  if(!atk||!atk.revealed) return false;
+  let ic=isCannon(atk);
+  // Adjacent
+  for(let [dx,dy] of [[0,1],[0,-1],[1,0],[-1,0]]){
+    let nx=x+dx,ny=y+dy;
+    if(nx<0||nx>=W||ny<0||ny>=H) continue;
+    let t=board[ny][nx];
+    if(!t) continue;
+    if(!t.revealed) return true; // can attempt unrevealed
+    if(t.side!==atk.side&&canEat(atk,t,x,y,nx,ny)) return true;
+  }
+  // Cannon range
+  if(ic){
+    for(let ny=0;ny<H;ny++){
+      if(ny===y) continue;
+      let t=board[ny][x];
+      if(t&&cannonPath(x,y,x,ny)){
+        if(!t.revealed) return true;
+        if(t.side!==atk.side) return true;
+      }
+    }
+    for(let nx=0;nx<W;nx++){
+      if(nx===x) continue;
+      let t=board[y][nx];
+      if(t&&cannonPath(x,y,nx,y)){
+        if(!t.revealed) return true;
+        if(t.side!==atk.side) return true;
+      }
+    }
+  }
+  return false;
 }
 
+/* ══════════════════════════════════════
+   TURN MANAGEMENT
+   ══════════════════════════════════════ */
+function switchTurn(){
+  currentTurn=currentTurn==='R'?'B':'R';
+  updateTurnBar();
+  if(gameMode==='ai'&&colorAssigned&&isAiTurn()&&!gameOver){
+    setTimeout(aiTurn,600);
+  }
+}
+function isAiTurn(){ return currentTurn===aiSide; }
+
+/* Assign colors when first piece is revealed */
+function assignColor(revealedSide, revealedBy){
+  // revealedBy: 'player' or 'ai'
+  if(colorAssigned) return;
+  if(gameMode!=='ai') { colorAssigned=true; return; }
+  if(revealedBy==='player'){
+    playerSide=revealedSide;
+    aiSide=revealedSide==='R'?'B':'R';
+  } else {
+    aiSide=revealedSide;
+    playerSide=revealedSide==='R'?'B':'R';
+  }
+  // Set currentTurn to whoever just acted so switchTurn flips correctly
+  currentTurn=revealedBy==='player'?playerSide:aiSide;
+  colorAssigned=true;
+}
+
+/* ══════════════════════════════════════
+   WIN CHECK
+   ══════════════════════════════════════ */
 function checkWin(){
   let r=0,b=0;
-  for(let row of board) for(let p of row) if(p){ if(p.side==="R") r++; else b++; }
-  if(r===0||b===0){
-    let wt=document.getElementById("winText");
-    wt.innerText=r===0?"黑勝":"紅勝";
-    wt.style.color=r===0?"#2c2416":"#c0392b";
-    document.getElementById("winOverlay").classList.add("show");
+  for(let row of board) for(let p of row) if(p){if(p.side==='R')r++;else b++;}
+  if(r>0&&b>0) return false;
+  gameOver=true;
+  let wt=$('winText');
+  if(gameMode==='ai'){
+    let w=r===0?'B':'R';
+    wt.innerText=w===playerSide?'你贏了！':'你輸了';
+    wt.style.color=w===playerSide?(playerSide==='R'?'#c0392b':'#2c2416'):'var(--ink2)';
+  } else {
+    wt.innerText=r===0?'黑勝':'紅勝';
+    wt.style.color=r===0?'#2c2416':'#c0392b';
+  }
+  $('winOverlay').classList.add('show');
+  return true;
+}
+
+/* ══════════════════════════════════════
+   CLICK HANDLER
+   ══════════════════════════════════════ */
+function clickCell(x,y){
+  if(animating||gameOver) return;
+  if(gameMode==='ai'&&colorAssigned&&isAiTurn()) return;
+  let cell=board[y][x];
+
+  // ── Reveal ──
+  if(cell&&!cell.revealed&&!sel){
+    saveH(); cell.revealed=true;
+    assignColor(cell.side,'player');
+    draw(); switchTurn(); return;
+  }
+
+  // ── Select / Move / Eat ──
+  if(sel){
+    let atk=board[sel.y][sel.x];
+    if(sel.x===x&&sel.y===y){ sel=null; draw(); return; }
+    if(atk&&isReachable(sel.x,sel.y,x,y,atk)){ doMove(sel.x,sel.y,x,y); return; }
+    if(cell&&cell.revealed){
+      if(gameMode==='ai'&&cell.side!==playerSide) return;
+      sel={x,y}; draw(); return;
+    }
+    sel=null; draw(); return;
+  }
+  if(cell&&cell.revealed){
+    if(gameMode==='ai'&&colorAssigned&&cell.side!==playerSide) return;
+    sel={x,y}; draw();
+  }
+}
+
+/* ══════════════════════════════════════
+   MOVE & CAPTURE (shared logic)
+   ══════════════════════════════════════ */
+function doMove(x1,y1,x2,y2){
+  let atk=board[y1][x1], tgt=board[y2][x2];
+  if(!atk) return;
+  let ic=isCannon(atk);
+  if(ic&&!tgt&&!adj(x1,y1,x2,y2)){ sel=null; draw(); return; }
+  if(ic&&tgt&&!cannonPath(x1,y1,x2,y2)){ sel=null; draw(); return; }
+  if(!ic&&!adj(x1,y1,x2,y2)){ sel=null; draw(); return; }
+  saveH();
+  // Move to empty
+  if(!tgt){
+    board[y2][x2]=atk; board[y1][x1]=null; sel=null;
+    if(checkWin()) return;
+    switchTurn(); draw(); return;
+  }
+  // Eat revealed
+  if(tgt.revealed){
+    if(!canEat(atk,tgt,x1,y1,x2,y2)){ sel=null; draw(); return; }
+    capture(x1,y1,x2,y2,atk,tgt,false);
+    return;
+  }
+  // Eat unrevealed — flip first
+  flipAndTry(x1,y1,x2,y2,atk,tgt);
+}
+
+function flipAndTry(x1,y1,x2,y2,atk,tgt){
+  animating=true; tgt.revealed=true;
+  assignColor(tgt.side,'player');
+  draw();
+  let el=$(`c${x2}_${y2}`); if(el) el.classList.add('reveal-pop');
+  setTimeout(()=>{
+    if(canEat(atk,tgt,x1,y1,x2,y2)){
+      capture(x1,y1,x2,y2,atk,tgt,false);
+    } else {
+      let ae=$(`c${x1}_${y1}`); if(ae) ae.classList.add('retreat-shake');
+      sel=null;
+      if(checkWin()){animating=false;return;}
+      switchTurn();
+      setTimeout(()=>{animating=false;draw();},350);
+    }
+  },460);
+}
+
+function capture(x1,y1,x2,y2,atk,tgt,wasAnim){
+  function finish(){
+    (atk.side==='R'?redCap:blkCap).push(tgt);
+    board[y2][x2]=atk; board[y1][x1]=null;
+    sel={x:x2,y:y2}; animating=false;
+    if(checkWin()) return;
+    if(!hasCapture(x2,y2)){ sel=null; switchTurn(); }
+    draw();
+  }
+  if(!tgt.revealed||wasAnim){
+    animating=true; tgt.revealed=true; draw();
+    let el=$(`c${x2}_${y2}`); if(el) el.classList.add('reveal-pop');
+    setTimeout(finish,460);
+  } else { finish(); }
+}
+
+/* ══════════════════════════════════════
+   AI — STRATEGY & EXECUTION
+   ══════════════════════════════════════ */
+
+function aiTurn(){
+  if(gameOver||animating) return;
+  let acts=aiCollectActions();
+  if(!acts.length) return;
+  acts.sort((a,b)=>b.score-a.score);
+  // Pick from top tier (within 2 pts)
+  let top=acts.filter(a=>a.score>=acts[0].score-2);
+  let pick=top[Math.floor(Math.random()*top.length)];
+  aiExec(pick);
+}
+
+function aiCollectActions(){
+  let A=[];
+  // Reveal
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    if(board[y][x]&&!board[y][x].revealed) A.push({act:'reveal',x,y,score:1});
+  }
+  // For each revealed AI piece
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    let p=board[y][x];
+    if(!p||!p.revealed||p.side!==aiSide) continue;
+    let ic=isCannon(p);
+    // Adjacent
+    for(let [dx,dy] of [[0,1],[0,-1],[1,0],[-1,0]]){
+      let nx=x+dx,ny=y+dy;
+      if(nx<0||nx>=W||ny<0||ny>=H) continue;
+      let t=board[ny][nx];
+      if(!t) A.push({act:'move',x1:x,y1:y,x2:nx,y2:ny,score:aiScoreMove(p,x,y,nx,ny)});
+      else if(t.revealed&&t.side!==aiSide&&canEat(p,t,x,y,nx,ny))
+        A.push({act:'eat',x1:x,y1:y,x2:nx,y2:ny,score:aiScoreEat(p,t)});
+      else if(!t.revealed)
+        A.push({act:'eatFlip',x1:x,y1:y,x2:nx,y2:ny,score:aiScoreFlipEat(p)});
+    }
+    // Cannon range
+    if(ic){
+      for(let d=0;d<2;d++){
+        let len=d===0?H:W;
+        for(let i=0;i<len;i++){
+          let nx=d===0?x:i, ny=d===0?i:y;
+          if(nx===x&&ny===y) continue;
+          let t=d===0?board[i][x]:board[y][i];
+          if(t&&cannonPath(x,y,nx,ny)){
+            if(t.revealed&&t.side!==aiSide)
+              A.push({act:'eat',x1:x,y1:y,x2:nx,y2:ny,score:aiScoreEat(p,t)+5});
+            else if(!t.revealed)
+              A.push({act:'eatFlip',x1:x,y1:y,x2:nx,y2:ny,score:aiScoreFlipEat(p)+2});
+          }
+        }
+      }
+    }
+  }
+  return A;
+}
+
+/* ── AI SCORING ── */
+function aiScoreEat(atk,tgt){ return 50+RANK[tgt.type]*5-RANK[atk.type]; }
+function aiScoreFlipEat(atk){ return 8-RANK[atk.type]; }
+
+function aiScoreMove(p,x1,y1,x2,y2){
+  let s=0;
+  // Escape threat
+  if(aiThreatened(x1,y1,p)){
+    s+= aiThreatened(x2,y2,p) ? 2 : 18+RANK[p.type]*2;
+  }
+  // ── PURSUIT: move toward nearest eatable enemy ──
+  let pursuit=aiPursuitScore(p,x1,y1,x2,y2);
+  s+=pursuit;
+  return s;
+}
+
+function aiPursuitScore(p,x1,y1,x2,y2){
+  // Find closest revealed enemy this piece can eat
+  let bestOld=999, bestNew=999;
+  for(let ey=0;ey<H;ey++) for(let ex=0;ex<W;ex++){
+    let ep=board[ey][ex];
+    if(!ep||!ep.revealed||ep.side===aiSide) continue;
+    // Can this piece eat that enemy? (ignoring position, just rank)
+    if(!aiCouldEatRank(p,ep)) continue;
+    let dOld=Math.abs(ex-x1)+Math.abs(ey-y1);
+    let dNew=Math.abs(ex-x2)+Math.abs(ey-y2);
+    if(dOld<bestOld) bestOld=dOld;
+    if(dNew<bestNew) bestNew=dNew;
+  }
+  if(bestOld===999) return 0; // no target
+  // Reward getting closer
+  if(bestNew<bestOld) return 12+(bestOld-bestNew)*3;
+  if(bestNew>bestOld) return -2; // penalize moving away
+  return 0;
+}
+
+/* Can piece a eat piece b by rank? (ignoring board position) */
+function aiCouldEatRank(a,b){
+  if(a.side===b.side) return false;
+  if(isCannon(a)) return true; // cannon can eat anything if path exists
+  let rA=RANK[a.type],rB=RANK[b.type];
+  if(rA===1&&rB===6) return true;
+  if(rA===6&&rB===1) return false;
+  if(rA===1&&isCannon(b)) return false;
+  return rA>=rB;
+}
+
+function aiThreatened(x,y,piece){
+  let es=piece.side==='R'?'B':'R';
+  for(let ey=0;ey<H;ey++) for(let ex=0;ex<W;ex++){
+    let ep=board[ey][ex];
+    if(!ep||!ep.revealed||ep.side!==es) continue;
+    if(isReachable(ex,ey,x,y,ep)&&canEat(ep,piece,ex,ey,x,y)) return true;
+  }
+  return false;
+}
+
+/* ── AI EXECUTION ── */
+function aiExec(a){
+  if(gameOver) return;
+  animating=true;
+
+  if(a.act==='reveal'){
+    saveH();
+    let c=board[a.y][a.x]; c.revealed=true;
+    assignColor(c.side,'ai');
+    draw();
+    let el=$(`c${a.x}_${a.y}`); if(el) el.classList.add('reveal-pop');
+    setTimeout(()=>{ animating=false; if(checkWin()) return; switchTurn(); draw(); },500);
+  }
+  else if(a.act==='move'){
+    saveH();
+    board[a.y2][a.x2]=board[a.y1][a.x1]; board[a.y1][a.x1]=null;
+    sel=null; draw();
+    setTimeout(()=>{ animating=false; if(checkWin()) return; switchTurn(); draw(); },400);
+  }
+  else if(a.act==='eat'){
+    saveH();
+    let atk=board[a.y1][a.x1], tgt=board[a.y2][a.x2];
+    (atk.side==='R'?redCap:blkCap).push(tgt);
+    board[a.y2][a.x2]=atk; board[a.y1][a.x1]=null;
+    sel={x:a.x2,y:a.y2}; draw();
+    setTimeout(()=>{ animating=false; if(checkWin()) return; aiChain(a.x2,a.y2); },500);
+  }
+  else if(a.act==='eatFlip'){
+    saveH();
+    let atk=board[a.y1][a.x1], tgt=board[a.y2][a.x2];
+    tgt.revealed=true;
+    assignColor(tgt.side,'ai');
+    draw();
+    let el=$(`c${a.x2}_${a.y2}`); if(el) el.classList.add('reveal-pop');
+    setTimeout(()=>{
+      if(canEat(atk,tgt,a.x1,a.y1,a.x2,a.y2)){
+        (atk.side==='R'?redCap:blkCap).push(tgt);
+        board[a.y2][a.x2]=atk; board[a.y1][a.x1]=null;
+        sel={x:a.x2,y:a.y2}; animating=false;
+        if(checkWin()) return;
+        draw(); setTimeout(()=>aiChain(a.x2,a.y2),500);
+      } else {
+        let ae=$(`c${a.x1}_${a.y1}`); if(ae) ae.classList.add('retreat-shake');
+        sel=null;
+        if(checkWin()){animating=false;return;}
+        setTimeout(()=>{ animating=false; switchTurn(); draw(); },350);
+      }
+    },460);
+  }
+}
+
+/* ── AI CHAIN EAT ── */
+function aiChain(x,y){
+  if(gameOver) return;
+  let atk=board[y][x];
+  if(!atk){ sel=null; switchTurn(); draw(); return; }
+
+  // Collect capture targets
+  let caps=[];
+  let ic=isCannon(atk);
+  for(let [dx,dy] of [[0,1],[0,-1],[1,0],[-1,0]]){
+    let nx=x+dx,ny=y+dy;
+    if(nx<0||nx>=W||ny<0||ny>=H) continue;
+    let t=board[ny][nx];
+    if(!t) continue;
+    if(t.revealed&&t.side!==atk.side&&canEat(atk,t,x,y,nx,ny))
+      caps.push({nx,ny,t,score:aiScoreEat(atk,t),rev:true});
+    if(!t.revealed)
+      caps.push({nx,ny,t,score:aiScoreFlipEat(atk),rev:false});
+  }
+  if(ic){
+    for(let d=0;d<2;d++){
+      let len=d===0?H:W;
+      for(let i=0;i<len;i++){
+        let nx=d===0?x:i, ny=d===0?i:y;
+        if(nx===x&&ny===y) continue;
+        let t=d===0?board[i][x]:board[y][i];
+        if(t&&cannonPath(x,y,nx,ny)){
+          if(t.revealed&&t.side!==atk.side)
+            caps.push({nx,ny,t,score:aiScoreEat(atk,t)+5,rev:true});
+          else if(!t.revealed)
+            caps.push({nx,ny,t,score:aiScoreFlipEat(atk)+2,rev:false});
+        }
+      }
+    }
+  }
+
+  if(!caps.length){ sel=null; switchTurn(); draw(); return; }
+  caps.sort((a,b)=>b.score-a.score);
+  let best=caps[0];
+  animating=true;
+
+  if(best.rev){
+    saveH();
+    (atk.side==='R'?redCap:blkCap).push(best.t);
+    board[best.ny][best.nx]=atk; board[y][x]=null;
+    sel={x:best.nx,y:best.ny}; draw();
+    setTimeout(()=>{ animating=false; if(checkWin()) return; aiChain(best.nx,best.ny); },500);
+  } else {
+    saveH();
+    best.t.revealed=true; draw();
+    let el=$(`c${best.nx}_${best.ny}`); if(el) el.classList.add('reveal-pop');
+    setTimeout(()=>{
+      if(canEat(atk,best.t,x,y,best.nx,best.ny)){
+        (atk.side==='R'?redCap:blkCap).push(best.t);
+        board[best.ny][best.nx]=atk; board[y][x]=null;
+        sel={x:best.nx,y:best.ny}; animating=false;
+        if(checkWin()) return;
+        draw(); setTimeout(()=>aiChain(best.nx,best.ny),500);
+      } else {
+        sel=null; animating=false;
+        if(checkWin()) return;
+        switchTurn(); draw();
+      }
+    },460);
   }
 }
 
